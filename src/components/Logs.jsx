@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const API_BASE  = 'http://localhost:8000/api';
+const API_BASE  = 'https://masculine-monorail-stylist.ngrok-free.dev/api';
 const DEVICE_ID = 'powerkubo-01';
 
 const EVENT_META = {

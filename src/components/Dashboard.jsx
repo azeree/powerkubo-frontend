@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 
-const API_BASE = 'http://localhost:8000/api';
+const API_BASE = 'https://masculine-monorail-stylist.ngrok-free.dev/api';
 const POLL_MS  = 3000;
 
 // ── Add/remove bins here ───────────────────────────────────────
@@ -66,7 +66,9 @@ function useBinData(deviceId) {
   useEffect(() => {
     const fetch_ = async () => {
       try {
-        const res = await fetch(`${API_BASE}/sensor/latest/?device_id=${deviceId}`);
+        const res = await fetch(`${API_BASE}/sensor/latest/?device_id=${deviceId}`, {
+  headers: { 'ngrok-skip-browser-warning': 'true' }
+});
         if (res.status === 404) { setOffline(true); setLoading(false); return; }
         if (!res.ok) throw new Error();
         setData(await res.json());
@@ -170,7 +172,9 @@ function BinDetailModal({ bin, onClose }) {
   useEffect(() => {
     const fetchHistory = async () => {
       try {
-        const res = await fetch(`${API_BASE}/sensor/history/?device_id=${bin.id}&limit=10`);
+        const res = await fetch(`${API_BASE}/sensor/history/?device_id=${bin.id}&limit=10`, {
+  headers: { 'ngrok-skip-browser-warning': 'true' }
+});
         if (!res.ok) return;
         const json = await res.json();
         setHistory([...json].reverse());
@@ -355,7 +359,9 @@ function SummaryBar() {
       const results = await Promise.all(
         BINS.map(async (bin) => {
           try {
-            const res = await fetch(`${API_BASE}/sensor/latest/?device_id=${bin.id}`);
+            const res = await fetch(`${API_BASE}/sensor/latest/?device_id=${bin.id}`, {
+  headers: { 'ngrok-skip-browser-warning': 'true' }
+});
             if (!res.ok) return { status: 'offline' };
             const data = await res.json();
             return { status: data.bin_status };

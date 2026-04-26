@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const API_BASE  = 'http://localhost:8000/api';
+const API_BASE  = 'https://masculine-monorail-stylist.ngrok-free.dev/api';
 const DEVICE_ID = 'powerkubo-01';
 
 export default function Settings() {
@@ -12,7 +12,9 @@ export default function Settings() {
   useEffect(() => {
     (async () => {
       try {
-        const res = await fetch(`${API_BASE}/settings/?device_id=${DEVICE_ID}`);
+        const res = await fetch(`${API_BASE}/settings/?device_id=${DEVICE_ID}`, {
+  headers: { 'ngrok-skip-browser-warning': 'true' }
+});
         if (!res.ok) throw new Error('Failed');
         setSettings(await res.json());
       } catch {
@@ -28,7 +30,9 @@ export default function Settings() {
     try {
       const res = await fetch(`${API_BASE}/settings/?device_id=${DEVICE_ID}`, {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json'
+          'ngrok-skip-browser-warning': 'true'
+         },
         body: JSON.stringify({ [field]: value }),
       });
       if (!res.ok) throw new Error('Save failed');
