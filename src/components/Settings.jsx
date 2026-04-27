@@ -30,7 +30,7 @@ export default function Settings() {
     try {
       const res = await fetch(`${API_BASE}/settings/?device_id=${DEVICE_ID}`, {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json'
+        headers: { 'Content-Type': 'application/json',
           'ngrok-skip-browser-warning': 'true'
          },
         body: JSON.stringify({ [field]: value }),
