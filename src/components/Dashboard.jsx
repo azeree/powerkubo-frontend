@@ -216,9 +216,11 @@ function BinDetailModal({ bin, onClose }) {
         </div>
 
         {/* Status badge */}
-        <div style={{ display: 'inline-block', padding: '6px 16px', borderRadius: 20, background: statusStyle.bg, color: statusStyle.color, fontSize: 13, fontWeight: 700, marginBottom: 20 }}>
-          {statusStyle.label}
-        </div>
+        {!offline && (
+  <div style={{ display: 'inline-block', padding: '6px 16px', borderRadius: 20, background: statusStyle.bg, color: statusStyle.color, fontSize: 13, fontWeight: 700, marginBottom: 20 }}>
+    {statusStyle.label}
+  </div>
+)}
 
         {/* Circular progress + stats */}
         <div style={{ display: 'flex', gap: 20, alignItems: 'center', marginBottom: 20 }}>
@@ -249,7 +251,21 @@ function BinDetailModal({ bin, onClose }) {
           <div style={{ fontFamily: 'var(--font-display)', fontSize: 11, fontWeight: 700, color: 'var(--text-muted)', marginBottom: 8, letterSpacing: '0.06em', textTransform: 'uppercase' }}>Location</div>
           <div style={{ fontSize: 14, color: 'var(--text-primary)', fontWeight: 500 }}>📍 {bin.location}</div>
           <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 4 }}>{bin.area} · {bin.id}</div>
-          <BinMap lat={lat} lng={lng} label={bin.label} />
+          {offline ? (
+  <div style={{
+    background: 'var(--bg-subtle)', borderRadius: 8, marginTop: 10,
+    height: 140, display: 'flex', alignItems: 'center', justifyContent: 'center',
+    flexDirection: 'column', gap: 8, border: '1px dashed var(--border)'
+  }}>
+    <div style={{ fontSize: 28 }}>📵</div>
+    <div style={{ fontSize: 12, color: 'var(--text-muted)', textAlign: 'center' }}>
+      Bin not connected<br/>
+      <span style={{ fontSize: 11 }}>Map will appear when device is online</span>
+    </div>
+  </div>
+) : (
+  <BinMap lat={lat} lng={lng} label={bin.label} />
+)}
         </div>
 
         {/* Recent readings */}
@@ -335,15 +351,19 @@ function BinCard({ bin, onClick }) {
             </div>
           </div>
         </div>
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 6 }}>
-          <div className="status-cell" style={{ padding: '5px 10px', fontSize: 12 }}><strong>Weight</strong>{weightKg.toFixed(2)} kg</div>
-          <div className="status-cell" style={{ padding: '5px 10px', fontSize: 12 }}><strong>Distance</strong>{distMM} mm</div>
-        </div>
+       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 6 }}>
+  <div className="status-cell" style={{ padding: '5px 10px', fontSize: 12 }}>
+    <strong>Weight</strong>{offline ? '—' : `${weightKg.toFixed(2)} kg`}
+  </div>
+  <div className="status-cell" style={{ padding: '5px 10px', fontSize: 12 }}>
+    <strong>Distance</strong>{offline ? '—' : `${distMM} mm`}
+  </div>
+</div>
       </div>
 
-      <div style={{ display: 'inline-block', padding: '4px 12px', borderRadius: 20, width: 'fit-content', background: statusStyle.bg, color: statusStyle.color, fontSize: 11, fontWeight: 700 }}>
-        {statusStyle.label}
-      </div>
+      {!offline && (
+        <div style={{ display: 'inline-block', padding: '4px 12px', borderRadius: 20, width: 'fit-content', background: statusStyle.bg, color: statusStyle.color, fontSize: 11, fontWeight: 700 }}>{statusStyle.label}</div>
+      )}
 
       {lastUpdated && <div style={{ fontSize: 10, color: 'var(--text-muted)', marginTop: -6 }}>Updated {lastUpdated.toLocaleTimeString()}</div>}
     </div>
