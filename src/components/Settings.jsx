@@ -13,7 +13,7 @@ export default function Settings() {
     (async () => {
       try {
         const res = await fetch(`${API_BASE}/settings/?device_id=${DEVICE_ID}`, {
-  headers: { 'ngrok-skip-browser-warning': 'true' }
+  headers: { 'ngrok-skip-browser-warning': 'true' },
 });
         if (!res.ok) throw new Error('Failed');
         setSettings(await res.json());
