@@ -18,7 +18,9 @@ export default function Logs() {
   // fetchLogs is outside useEffect so the Refresh button can call it too
   const fetchLogs = async () => {
     try {
-      const res = await fetch(`${API_BASE}/logs/?device_id=${DEVICE_ID}&limit=100`);
+      const res = await fetch(`${API_BASE}/logs/?device_id=${DEVICE_ID}&limit=100`, {
+  headers: { 'ngrok-skip-browser-warning': 'true' },
+});
       if (!res.ok) throw new Error('Failed');
       setLogs(await res.json());
       setError(null);
